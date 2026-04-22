@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Hello world!"
+# Usage: ./server-stats.sh
+
+VER="0.0.1"
+
+echo "=== SYSTEM STATUS CHECKER V$VER ==="
