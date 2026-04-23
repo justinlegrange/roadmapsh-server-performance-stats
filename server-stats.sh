@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Usage: ./server-stats.sh
+
+VER="0.0.1"
+
+echo "=== SYSTEM STATUS CHECKER V$VER ==="
+
 # Calculation from https://linuxvox.com/blog/accurately-calculating-cpu-utilization-in-linux-using-proc-stat/
 
 # Need to get 2 samples for deltas from /proc/sys
@@ -42,3 +48,4 @@ CPU_USAGE=$(echo "scale=5;$BUSY_JIFFIES/$TOTAL_JIFFIES*100" | bc)
 
 echo "CPU Usage Stats (All CPUs)"
 printf "  %s\n" "[*] Usage: $CPU_USAGE%"
+
