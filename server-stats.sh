@@ -6,6 +6,7 @@ VER="0.2.1"
 
 echo -e "\t-=-=-=- SYSTEM STATUS CHECKER V$VER -=-=-=-"
 
+# CPU USAGE
 # Calculation from https://linuxvox.com/blog/accurately-calculating-cpu-utilization-in-linux-using-proc-stat/
 
 # Need to get 2 samples for deltas from /proc/sys
@@ -48,9 +49,22 @@ IDLE_JIFFIES=$DELTA_IDLE
 BUSY_JIFFIES=$(($TOTAL_JIFFIES-$IDLE_JIFFIES))
 CPU_USAGE=$(echo "scale=5;$BUSY_JIFFIES/$TOTAL_JIFFIES*100" | bc)
 
-echo
-echo "CPU Usage Stats (All CPUs)"
-printf "  %s\n" "[*] Usage: $CPU_USAGE%"
-echo
-echo "Disk Usage Stats (All Disks)"
+# MEMORY USAGE
+MEM_USED=$(free -m | awk '/Mem/{print $3}')
+MEM_TOTAL=$(free -m | awk '/Mem/{print $2}')
+# MEM_PERCENT=(($MEM_USED/$MEM_TOTAL)*100)
+MEM_PERCENT=$(echo "scale=5;$MEM_USED/$MEM_TOTAL*100" | bc)
+SWAP_USED=$(free -m | awk '/Swap/{print $3}')
+SWAP_TOTAL=$(free -m | awk '/Swap/{print $2}')
+# SWAP_PERCENT=(($SWAP_USED/$SWAP_TOTAL)*100)
+SWAP_PERCENT=$(echo "scale=5;$SWAP_USED/$SWAP_TOTAL*100" | bc)
+
+echo -e "\nCPU Usage Stats (All CPUs)"
+printf "%s\n" "[*] Usage: $CPU_USAGE%"
+echo -e "\nDisk Usage Stats (All Disks)"
 df -lh | grep -v "Use"
+echo -e "\nMemory Usage %"
+printf "%s\n" "[*] Memory Used: $MEM_PERCENT%"
+printf "%s\n" "[*] Swap Used: $SWAP_PERCENT%"
+echo -e "\nMemory Usage (All)"
+free -h
