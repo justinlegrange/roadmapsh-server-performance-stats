@@ -62,7 +62,7 @@ SWAP_PERCENT=$(echo "scale=5;$SWAP_USED/$SWAP_TOTAL*100" | bc)
 echo -e "\nCPU Usage Stats (All CPUs)"
 printf "%s\n" "[*] Usage: $CPU_USAGE%"
 echo -e "\nDisk Usage Stats (All Disks)"
-df -lh | grep -v "Use"
+df -lh | awk '{ printf "%-25s %-8s %-8s %s\n", $1, $2, $3, $5 }'
 echo -e "\nMemory Usage %"
 printf "%s\n" "[*] Memory Used: $MEM_PERCENT%"
 printf "%s\n" "[*] Swap Used: $SWAP_PERCENT%"
