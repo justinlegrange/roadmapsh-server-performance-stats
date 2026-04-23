@@ -2,14 +2,15 @@
 
 # Usage: ./server-stats.sh
 
-VER="0.1.0"
+VER="0.2.1"
 
-echo "=== SYSTEM STATUS CHECKER V$VER ==="
+echo -e "\t-=-=-=- SYSTEM STATUS CHECKER V$VER -=-=-=-"
 
 # Calculation from https://linuxvox.com/blog/accurately-calculating-cpu-utilization-in-linux-using-proc-stat/
 
 # Need to get 2 samples for deltas from /proc/sys
 # Using cut, delimits cpu info into fields starting from 3
+echo "[*] Gathering CPU sample 1..."
 CPU_USER_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 3)
 CPU_USER_NICE_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 4)
 CPU_SYS_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 5)
@@ -19,6 +20,7 @@ CPU_IRQ_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 8)
 CPU_SIRQ_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 9)
 CPU_STEAL_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 10)
 sleep 1
+echo "[*] Gathering CPU sample 2..."
 CPU_USER_S2=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 3)
 CPU_USER_NICE_S2=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 4)
 CPU_SYS_S2=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 5)
@@ -46,6 +48,9 @@ IDLE_JIFFIES=$DELTA_IDLE
 BUSY_JIFFIES=$(($TOTAL_JIFFIES-$IDLE_JIFFIES))
 CPU_USAGE=$(echo "scale=5;$BUSY_JIFFIES/$TOTAL_JIFFIES*100" | bc)
 
+echo
 echo "CPU Usage Stats (All CPUs)"
 printf "  %s\n" "[*] Usage: $CPU_USAGE%"
-
+echo
+echo "Disk Usage Stats (All Disks)"
+df -lh | grep -v "Use"
