@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Calculation from https://linuxvox.com/blog/accurately-calculating-cpu-utilization-in-linux-using-proc-stat/
+
 # Need to get 2 samples for deltas from /proc/sys
 # Using cut, delimits cpu info into fields starting from 3
 CPU_USER_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 3)
@@ -10,9 +12,7 @@ CPU_IO_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 7)
 CPU_IRQ_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 8)
 CPU_SIRQ_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 9)
 CPU_STEAL_S1=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 10)
-
 sleep 1
-
 CPU_USER_S2=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 3)
 CPU_USER_NICE_S2=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 4)
 CPU_SYS_S2=$(cat /proc/stat | grep '^cpu ' | cut -d ' ' -f 5)
@@ -32,8 +32,8 @@ DELTA_IRQ=$(($CPU_IRQ_S2 - $CPU_IRQ_S1))
 DELTA_SIRQ=$(($CPU_SIRQ_S2 - $CPU_SIRQ_S1))
 DELTA_STEAL=$(($CPU_STEAL_S2 - $CPU_STEAL_S1))
 
-# Calculate total jiffies.
-TOTAL_JIFFIES=$(($DELTA_USER+$DELTA_NICE+$DELTA_SYS+$DELTA_IDLE+$DELTA_IOWAIT+$DELTA_IRQ+$DELTA_SIRQ+$DELTA_STEAL))
+# Calculate jiffies, excluding IOwait.
+TOTAL_JIFFIES=$(($DELTA_USER+$DELTA_NICE+$DELTA_SYS+$DELTA_IDLE+$DELTA_IRQ+$DELTA_SIRQ+$DELTA_STEAL))
 IDLE_JIFFIES=$DELTA_IDLE
 
 # Calculate CPU usage.
