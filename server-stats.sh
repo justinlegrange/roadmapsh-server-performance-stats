@@ -2,7 +2,7 @@
 
 # Usage: ./server-stats.sh
 
-VER="0.0.1"
+VER="0.1.0"
 
 echo "=== SYSTEM STATUS CHECKER V$VER ==="
 
