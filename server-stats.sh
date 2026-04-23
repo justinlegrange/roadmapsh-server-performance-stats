@@ -42,8 +42,3 @@ CPU_USAGE=$(echo "scale=5;$BUSY_JIFFIES/$TOTAL_JIFFIES*100" | bc)
 
 echo "CPU Usage Stats (All CPUs)"
 printf "  %s\n" "[*] Usage: $CPU_USAGE%"
-# echo "CPU Usage: $CPU_USAGE"
-# printf "\t%s\n" "[*] User: $CPU_USER%"
-# printf "\t%s\n" "[*] User (nice): $CPU_USER_NICE%"
-# printf "\t%s\n" "[*] System: $CPU_SYS%"
-# printf "\t%s\n" "[*] Idle: $CPU_IDLE%"
